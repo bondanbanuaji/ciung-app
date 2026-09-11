@@ -7,10 +7,12 @@ import {
   Tag, Truck, Users, BadgePercent, History, BarChart3, Settings, User, Menu, X, Search, Bell, ChevronDown, Boxes, Wrench, LogOut,
 } from 'lucide-react'
 import Link from 'next/link'
+import { useAuth } from '@/store/auth'
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
+  const { user } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [inventoryOpen, setInventoryOpen] = useState(true)
   const [masterOpen, setMasterOpen] = useState(true)
@@ -148,10 +150,10 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             <Bell size={18} className="text-muted-foreground" />
           </button>
           <div className="hidden sm:flex items-center gap-2.5 pl-3 shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-sm hidden lg:flex">A</div>
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-sm hidden lg:flex">{(user?.name ?? 'A').charAt(0).toUpperCase()}</div>
             <div className="hidden lg:block leading-tight">
-              <p className="text-sm font-medium text-foreground leading-none">Admin Ciung</p>
-              <p className="text-xs text-muted-foreground capitalize">administrator</p>
+              <p className="text-sm font-medium text-foreground leading-none">{user?.name ?? 'Memuat...'}</p>
+              <p className="text-xs text-muted-foreground capitalize">{user?.role ?? ''}</p>
             </div>
             <ChevronDown size={16} className="text-muted-foreground hidden lg:block" />
           </div>
@@ -173,7 +175,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           { label: 'Inventory', icon: Package, to: '/dashboard/inventory', active: isActivePrefix('/dashboard/inventory') },
           { label: 'Transaksi', icon: History, to: '/dashboard/transactions', active: isActive('/dashboard/transactions') },
           { label: 'Laporan', icon: BarChart3, to: '/dashboard/reports', active: isActivePrefix('/dashboard/reports') },
-          { label: 'Menu', action: () => setSidebarOpen(true), active: false },
+          { label: 'Menu', icon: Menu, action: () => setSidebarOpen(true), active: false },
         ].map((item) => (
           item.to ? (
             <Link key={item.label} href={item.to} className={`flex-1 flex flex-col items-center justify-center gap-1 py-1 ${item.active ? 'text-primary bg-primary/5' : 'text-muted-foreground'}`}>

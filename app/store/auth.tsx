@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import type { User } from '@/types'
 
 interface AuthContextType {
@@ -58,6 +58,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     setIsAuthenticated(false)
   }, [])
+
+  // Pulihkan sesi saat refresh halaman (cookie httpOnly masih ada)
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout, fetchUser }}>

@@ -13,7 +13,7 @@ export function TableBody({ children }: { children: ReactNode }) {
 export function TableRow({ children, className }: { children: ReactNode; className?: string }) {
   return <tr className={cn('[&_td]:border-r [&_td]:border-s-muted/50', className)}>{children}</tr>
 }
-export function TableHead({ children, className }: { children: ReactNode; className?: string }) {
+export function TableHead({ children, className }: { children?: ReactNode; className?: string }) {
   return <th className={cn('h-12 px-4 text-left align-middle font-semibold text-muted-foreground [&[align=center]]:text-center', className)}>{children}</th>
 }
 export function TableCell({ children, className }: { children: ReactNode; className?: string }) {

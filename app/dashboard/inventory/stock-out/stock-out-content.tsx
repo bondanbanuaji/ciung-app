@@ -11,36 +11,41 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
 
-interface Option { id: number; code: string; name: string; company?: string | null; stock?: number; unit?: string; costPrice?: number }
+interface Customer { id: number; code: string; name: string }
+interface Product { id: number; code: string; name: string; stock: number; unit: string; sellingPrice: number }
 
-export function StockInForm() {
-  const [supplierId, setSupplierId] = useState('')
+export function StockOutContent() {
+  const [customerId, setCustomerId] = useState('')
   const [productId, setProductId] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [costPrice, setCostPrice] = useState(0)
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
   const { show } = useToast()
   const qc = useQueryClient()
 
   const { data, isLoading } = useQuery({
-    queryKey: ['stock-in-form'],
-    queryFn: () => apiGet<{ success: boolean; data: { suppliers: Option[]; products: Option[] } }>('/api/stock-in'),
+    queryKey: ['stock-out-form'],
+    queryFn: () => apiGet<{ success: boolean; data: { customers: Customer[]; products: Product[] } }>('/api/stock-out'),
   })
-  const suppliers = data?.data.suppliers ?? []
+  const customers = data?.data.customers ?? []
   const products = data?.data.products ?? []
   const selected = products.find((p) => String(p.id) === productId)
+  const total = selected ? quantity * selected.sellingPrice : 0
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (selected && quantity > selected.stock) {
+      show(`Stok tidak mencukupi. Stok saat ini: ${selected.stock}`, 'error')
+      return
+    }
     setSaving(true)
     try {
-      await apiSend('/api/stock-in', 'POST', {
-        supplier_id: Number(supplierId), product_id: Number(productId),
-        quantity: Number(quantity), cost_price: Number(costPrice), notes: notes || undefined,
+      await apiSend('/api/stock-out', 'POST', {
+        customer_id: Number(customerId), product_id: Number(productId),
+        quantity: Number(quantity), notes: notes || undefined,
       })
-      show('Barang masuk berhasil dicatat')
-      setProductId(''); setQuantity(1); setCostPrice(0); setNotes('')
+      show('Barang keluar berhasil dicatat')
+      setProductId(''); setQuantity(1); setNotes('')
       qc.invalidateQueries({ queryKey: ['dashboard'] })
       qc.invalidateQueries({ queryKey: ['products'] })
     } catch (err: any) {
@@ -52,31 +57,28 @@ export function StockInForm() {
 
   return (
     <div className="max-w-2xl space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Barang Masuk</h1>
+      <h1 className="text-2xl font-bold text-foreground">Barang Keluar</h1>
       <Card>
-        <CardHeader><CardTitle>Formulir Penerimaan Barang</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Formulir Penjualan / Pengeluaran</CardTitle></CardHeader>
         <CardContent>
           {isLoading ? <div className="space-y-2"><Skeleton className="h-10" /><Skeleton className="h-10" /><Skeleton className="h-10" /></div> : (
             <form onSubmit={submit} className="space-y-4">
               <div>
-                <Label>Supplier</Label>
-                <select value={supplierId} onChange={(e) => setSupplierId(e.target.value)} required className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm">
-                  <option value="">Pilih supplier...</option>
-                  {suppliers.map((s) => <option key={s.id} value={s.id}>{s.company ?? s.name} ({s.code})</option>)}
+                <Label>Customer</Label>
+                <select value={customerId} onChange={(e) => setCustomerId(e.target.value)} required className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm">
+                  <option value="">Pilih customer...</option>
+                  {customers.map((c) => <option key={c.id} value={c.id}>{c.name} ({c.code})</option>)}
                 </select>
               </div>
               <div>
                 <Label>Produk</Label>
-                <select value={productId} onChange={(e) => { setProductId(e.target.value); const p = products.find((x) => String(x.id) === e.target.value); if (p?.costPrice) setCostPrice(p.costPrice) }} required className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm">
+                <select value={productId} onChange={(e) => setProductId(e.target.value)} required className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm">
                   <option value="">Pilih produk...</option>
                   {products.map((p) => <option key={p.id} value={p.id}>{p.code} — {p.name} (stok: {p.stock})</option>)}
                 </select>
-                {selected && <p className="mt-1 text-xs text-muted-foreground">Stok saat ini: {selected.stock} {selected.unit} • Harga modal terakhir: {formatRupiah(selected.costPrice ?? 0)}</p>}
+                {selected && <p className="mt-1 text-xs text-muted-foreground">Harga jual: {formatRupiah(selected.sellingPrice)} • Estimasi total: {formatRupiah(total)}</p>}
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div><Label>Jumlah</Label><Input type="number" min={1} value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} required /></div>
-                <div><Label>Harga Modal / Satuan</Label><Input type="number" min={0} value={costPrice} onChange={(e) => setCostPrice(Number(e.target.value))} required /></div>
-              </div>
+              <div><Label>Jumlah</Label><Input type="number" min={1} max={selected?.stock} value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} required /></div>
               <div><Label>Catatan (opsional)</Label><Input value={notes} onChange={(e) => setNotes(e.target.value)} /></div>
               <Button type="submit" disabled={saving} className="w-full">{saving ? 'Menyimpan...' : 'Simpan'}</Button>
             </form>

@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: {
         customer: {
-          code: c.code, name: c.name, phone: c.phone, email: c.email,
+          id: c.id, code: c.code, name: c.name, phone: c.phone, email: c.email,
           address: c.address, notes: c.notes, ...stats, joinedAt: isoDate(c.createdAt),
         },
         transactions: movements.map((m) => ({
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
   ])
   const data = await Promise.all(
     rows.map(async (c) => ({
-      code: c.code, name: c.name, phone: c.phone, email: c.email,
+      id: c.id, code: c.code, name: c.name, phone: c.phone, email: c.email,
       address: c.address, notes: c.notes,
       ...(await customerStats(c.id)),
       joinedAt: isoDate(c.createdAt),
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     success: true,
     data: data.map((d) => ({
-      code: d.code, name: d.name, phone: d.phone, email: d.email,
+      id: d.id, code: d.code, name: d.name, phone: d.phone, email: d.email,
       address: d.address, notes: d.notes,
       totalTransactions: d.totalTransactions, totalPurchase: d.totalPurchase, joinedAt: d.joinedAt,
     })),

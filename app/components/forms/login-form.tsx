@@ -8,7 +8,7 @@ export function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { login } = useAuth()
-  const [email, setEmail] = useState('admin@ciungwarna.co.id')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -43,7 +43,7 @@ export function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-          placeholder="admin@ciungwarna.co.id"
+          placeholder="nama@ciungwarna.co.id"
         />
       </div>
       <div>
@@ -66,7 +66,7 @@ export function LoginForm() {
         {loading ? 'Masuk...' : 'Masuk'}
       </button>
       <p className="text-center text-xs text-muted-foreground">
-        Akun default: admin@ciungwarna.co.id / admin123
+        Hubungi admin untuk akun akses.
       </p>
     </form>
   )

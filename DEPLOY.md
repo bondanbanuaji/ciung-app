@@ -23,7 +23,10 @@ npm run db:seed
 npm run dev
 ```
 
-Login: `admin@ciungwarna.co.id` / `admin123`.
+Seed hanya membuat 1 akun admin bootstrap (default `admin@ciungwarna.co.id` /
+`admin123`, bisa dioverride via env `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`).
+Segera ganti password setelah login pertama. Tidak ada data contoh:
+kategori/supplier/customer/produk/transaksi harus diinput manual via aplikasi.
 
 ## 3. Deploy ke Vercel
 

@@ -3,6 +3,7 @@ import { db } from '@/lib/db'
 import { authOr401, num, paginationMeta, paging, stockStatus } from '@/lib/api-helpers'
 
 function serialize(p: {
+  id: number
   code: string
   name: string
   category: { name: string; slug: string }
@@ -19,6 +20,7 @@ function serialize(p: {
   updatedAt: Date
 }) {
   return {
+    id: p.id,
     code: p.code,
     name: p.name,
     category: p.category.name,
