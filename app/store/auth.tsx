@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import type { User } from '@/types'
+import { beginLoading } from '@/store/loading'
 
 interface AuthContextType {
   user: User | null
@@ -37,26 +38,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
-    const data = await res.json().catch(() => null)
-    if (res.ok && data?.success) {
-      await fetchUser()
-      return { success: true }
+    const done = beginLoading()
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await res.json().catch(() => null)
+      if (res.ok && data?.success) {
+        await fetchUser()
+        return { success: true }
+      }
+      return { success: false, message: data?.message || 'Login gagal' }
+    } finally {
+      done()
     }
-    return { success: false, message: data?.message || 'Login gagal' }
   }, [fetchUser])
 
   const logout = useCallback(async () => {
+    const done = beginLoading()
     try {
       await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
     } catch {}
     setUser(null)
     setIsAuthenticated(false)
+    done()
   }, [])
 
   // Pulihkan sesi saat refresh halaman (cookie httpOnly masih ada)

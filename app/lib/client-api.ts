@@ -1,5 +1,7 @@
 'use client'
 
+import { beginLoading } from '@/store/loading'
+
 async function parse<T>(res: Response): Promise<T> {
   const data = await res.json().catch(() => null)
   if (!res.ok || (data && data.success === false && res.status >= 400)) {
@@ -14,11 +16,16 @@ export async function apiGet<T>(path: string): Promise<T> {
 }
 
 export async function apiSend<T>(path: string, method: string, body?: unknown): Promise<T> {
-  const res = await fetch(path, {
-    method,
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  })
-  return parse<T>(res)
+  const done = beginLoading()
+  try {
+    const res = await fetch(path, {
+      method,
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    })
+    return await parse<T>(res)
+  } finally {
+    done()
+  }
 }

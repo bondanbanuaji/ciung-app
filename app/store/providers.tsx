@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ToastProvider, ToastContainer } from '@/store/toast'
 import { AuthProvider } from '@/store/auth'
+import { GlobalLoadingOverlay } from '@/store/loading'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <AuthProvider>
         <ToastProvider>
           {children}
+          <GlobalLoadingOverlay />
           <ToastContainer />
           <ReactQueryDevtools initialIsOpen={false} />
         </ToastProvider>
