@@ -1,0 +1,33 @@
+# Menjaga database Supabase (free tier) tetap aktif.
+#
+# Latar belakang: Supabase mem-pause project gratis yang tidak ada aktivitas
+# ±7 hari. Workflow ini menyenggol database tiap 3 hari lewat /api/health
+# (query SELECT 1, murah) sehingga project selalu tercatat aktif dan datanya
+# tidak di-pause/reset meski aplikasi tidak dibuka berminggu-minggu.
+#
+# Syarat: tambahkan secret APP_URL di GitHub repo → Settings → Secrets and
+# variables → Actions → New repository secret:
+#   APP_URL = https://<namaproject>.vercel.app  (tanpa trailing slash)
+
+name: keep-supabase-alive
+
+on:
+  schedule:
+    # tiap 3 hari jam 02:00 UTC
+    - cron: '0 2 */3 * *'
+  workflow_dispatch: # tombol run manual di tab Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping /api/health (3x percobaan)
+        run: |
+          for i in 1 2 3; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "${{ secrets.APP_URL }}/api/health") && echo "attempt $i -> HTTP $CODE"
+            if [ "$CODE" = "200" ]; then echo "Supabase keep-alive OK"; exit 0; fi
+            sleep 30
+          done
+          echo "Keep-alive gagal 3x — cek Vercel & Supabase"
+          exit 1

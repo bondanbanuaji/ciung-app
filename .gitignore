@@ -1,0 +1,13 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# env (jangan commit kredensial — set di Vercel dashboard untuk production)
+.env
+.env*.local
+
+# misc
+*.tsbuildinfo

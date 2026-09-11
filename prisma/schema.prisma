@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum MovementType {
+  masuk
+  keluar
+  adjustment
+}
+
+enum UserRole {
+  admin
+  kasir
+  gudang
+}
+
+enum UserStatus {
+  active
+  inactive
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  slug      String    @unique
+  icon      String?
+  color     String?
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Supplier {
+  id        Int             @id @default(autoincrement())
+  code      String          @unique
+  name      String
+  company   String?
+  phone     String?
+  email     String?
+  address   String?
+  notes     String?
+  products  Product[]
+  movements StockMovement[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model Customer {
+  id        Int             @id @default(autoincrement())
+  code      String          @unique
+  name      String
+  phone     String?
+  email     String?
+  address   String?
+  notes     String?
+  movements StockMovement[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model Product {
+  id           Int             @id @default(autoincrement())
+  code         String          @unique
+  name         String
+  categoryId   Int
+  category     Category        @relation(fields: [categoryId], references: [id])
+  unit         String
+  stock        Int             @default(0)
+  minStock     Int             @default(0)
+  costPrice    Decimal         @db.Decimal(15, 2)
+  markup       Int             @default(0)
+  sellingPrice Decimal         @db.Decimal(15, 2)
+  supplierId   Int?
+  supplier     Supplier?       @relation(fields: [supplierId], references: [id])
+  image        String?
+  deletedAt    DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  movements    StockMovement[]
+
+  @@index([categoryId])
+  @@index([supplierId])
+  @@index([code])
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  username  String     @unique
+  email     String     @unique
+  phone     String?
+  password  String
+  role      UserRole   @default(kasir)
+  status    UserStatus @default(active)
+  avatar    String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  movements StockMovement[]
+}
+
+model StockMovement {
+  id            Int          @id @default(autoincrement())
+  productId     Int
+  product       Product      @relation(fields: [productId], references: [id])
+  supplierId    Int?
+  supplier      Supplier?    @relation(fields: [supplierId], references: [id])
+  customerId    Int?
+  customer      Customer?    @relation(fields: [customerId], references: [id])
+  type          MovementType
+  quantity      Int
+  previousStock Int
+  newStock      Int
+  costPrice     Decimal?     @db.Decimal(15, 2)
+  unitPrice     Decimal?     @db.Decimal(15, 2)
+  total         Decimal?     @db.Decimal(15, 2)
+  referenceId   String?
+  referenceType String?
+  reason        String?
+  userId        Int?
+  user          User?        @relation(fields: [userId], references: [id])
+  notes         String?
+  movementDate  DateTime     @db.Date
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([productId])
+  @@index([type])
+  @@index([movementDate])
+}
+
+model Setting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String?
+  group     String   @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
