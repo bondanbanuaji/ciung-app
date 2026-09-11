@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { authOr401, dayBounds, num } from '@/lib/api-helpers'
+import { getStoreBranding } from '@/lib/store'
 
 // Export CSV langsung (format=csv) agar bisa diunduh di Vercel tanpa worker.
 // format=excel mengembalikan JSON status seperti Laravel lama.
@@ -24,12 +25,23 @@ export async function GET(request: NextRequest) {
     return /[",\n]/.test(s) ? `"${s.replaceAll('"', '""')}"` : s
   }
 
+  // Kop toko dari identitas di database (CSV tidak bisa menyematkan gambar,
+  // jadi logo diwakili nama + alamat + telepon resmi toko).
+  const store = await getStoreBranding()
+  const kop = (title: string) => [
+    store.name,
+    [store.address, store.phone].filter(Boolean).join(' | '),
+    `${title} — dicetak ${new Date().toLocaleDateString('id-ID')}`,
+    '',
+  ].map(escape).join('\n')
+
   if (tab === 'stok') {
     const where: Record<string, unknown> = { deletedAt: null }
     if (categoryId) where.categoryId = categoryId
     if (supplierId) where.supplierId = supplierId
     const rows = await db.product.findMany({ where, include: { category: true, supplier: true }, orderBy: { name: 'asc' } })
     const csv = [
+      kop('Laporan Stok'),
       'Kode,Nama,Kategori,Stok,Satuan,Harga Modal,Harga Jual,Nilai Stok',
       ...rows.map((p) =>
         [p.code, p.name, p.category.name, p.stock, p.unit, num(p.costPrice), num(p.sellingPrice), p.stock * num(p.costPrice)].map(escape).join(',')
@@ -57,7 +69,9 @@ export async function GET(request: NextRequest) {
     orderBy: [{ movementDate: 'desc' }, { id: 'desc' }],
     take: 5000,
   })
+  const tabTitle = tab === 'masuk' ? 'Laporan Barang Masuk' : tab === 'keluar' ? 'Laporan Barang Keluar' : 'Laporan Penjualan'
   const csv = [
+    kop(tabTitle),
     'Tanggal,Tipe,Kode Produk,Nama Produk,Kategori,Qty,Harga Satuan,Total,Supplier,Customer',
     ...rows.map((m) =>
       [

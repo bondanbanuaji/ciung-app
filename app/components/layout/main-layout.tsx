@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/store/auth'
+import { StoreMark } from '@/components/brand/store-logo'
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -64,11 +65,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex bg-background antialiased">
       <aside className="hidden lg:flex w-[268px] shrink-0 flex-col bg-surface sticky top-0 h-screen overflow-hidden text-sidebar-foreground shadow-[var(--shadow-elevation-3)]">
         <div className="h-14 lg:h-16 px-6 flex items-center gap-3 shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">CW</div>
-          <div className="min-w-0">
-            <p className="font-semibold text-sidebar-foreground leading-none text-[14px] truncate">Ciung Warna</p>
-            <p className="text-[11px] tracking-widest font-medium text-muted-foreground uppercase mt-0.5">Inventory</p>
-          </div>
+          <StoreMark size={32} />
         </div>
         <div className="flex-1 overflow-y-auto py-3 px-3 space-y-5">
           <Link href="/dashboard" className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive('/dashboard') ? 'bg-primary text-primary-foreground shadow-[var(--shadow-elevation-1)]' : 'text-muted-foreground hover:bg-s-muted'}`}>
@@ -166,7 +163,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         </main>
         <footer className="hidden lg:flex px-6 py-3 bg-surface shadow-[var(--shadow-elevation-1)] text-xs text-muted-foreground justify-between">
           <span>&copy; 2026 Ciung Warna — Inventory Management</span>
-          <span className="font-mono">React • Next.js • Tailwind • Laravel API</span>
+          <span className="font-mono">Next.js • Prisma • PostgreSQL</span>
         </footer>
       </div>
       <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md shadow-[0_-1px_8px_rgba(16,24,40,0.06)] flex items-stretch h-[64px]">

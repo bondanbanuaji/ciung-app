@@ -28,6 +28,22 @@ async function main() {
     },
   })
 
+  // ---- Identitas toko (konfigurasi sistem, bukan dummy) ----
+  // Dibaca frontend (logo/nama di login, sidebar, kop laporan & ekspor).
+  const storeDefaults: [string, string][] = [
+    ['store.name', process.env.SEED_STORE_NAME ?? 'Ciung Warna'],
+    ['store.address', process.env.SEED_STORE_ADDRESS ?? ''],
+    ['store.phone', process.env.SEED_STORE_PHONE ?? ''],
+    ['store.logo_path', '/img/ciung__logo.webp'],
+  ]
+  for (const [key, value] of storeDefaults) {
+    await prisma.setting.upsert({
+      where: { key },
+      update: {},
+      create: { key, value, group: 'store' },
+    })
+  }
+
   console.log(`Seed selesai. Admin bootstrap siap: ${email} (ganti password setelah login pertama).`)
 }
 

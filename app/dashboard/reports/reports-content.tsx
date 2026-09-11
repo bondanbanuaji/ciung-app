@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { apiGet } from '@/lib/client-api'
+import { STORE_LOGO_WEBP } from '@/lib/brand'
 import { formatRupiah } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -35,9 +36,27 @@ export function ReportsContent() {
   const pagination = data?.data.pagination
   const categories = data?.data.categories ?? []
   const exportHref = `/api/reports/export?${new URLSearchParams({ tab, date_from: dateFrom, date_to: dateTo, category_id: categoryId, format: 'csv' })}`
+  const { data: brandData } = useQuery({
+    queryKey: ['store-branding'],
+    queryFn: () => apiGet<{ success: boolean; data: { name: string; address: string; phone: string; logoPath: string } }>('/api/settings/public'),
+    staleTime: Infinity,
+  })
+  const brand = brandData?.data
+  const tabLabel = TABS.find((t) => t.value === tab)?.label ?? tab
 
   return (
     <div className="space-y-4">
+      {/* Kop cetak: hanya tampil saat print (lihat CSS print di globals.css) */}
+      <div className="report-kop">
+        <img src={brand?.logoPath || STORE_LOGO_WEBP} alt="Logo" className="report-kop-logo" />
+        <div>
+          <p className="report-kop-name">{brand?.name || 'Ciung Warna'}</p>
+          {[brand?.address, brand?.phone].filter(Boolean).join(' | ') && (
+            <p className="report-kop-sub">{[brand?.address, brand?.phone].filter(Boolean).join(' | ')}</p>
+          )}
+          <p className="report-kop-sub">Laporan {tabLabel} — {new Date().toLocaleDateString('id-ID')}</p>
+        </div>
+      </div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Laporan</h1>
         <a href={exportHref} className="inline-flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground">Export CSV</a>
