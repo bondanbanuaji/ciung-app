@@ -9,8 +9,12 @@ export const viewport: Viewport = {
   themeColor: '#2563eb',
 }
 
+const appUrl =
+  process.env.APP_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+
 export const metadata: Metadata = {
-  metadataBase: process.env.APP_URL ? new URL(process.env.APP_URL) : undefined,
+  metadataBase: new URL(appUrl),
   title: {
     default: 'Ciung Warna — Inventory Management',
     template: '%s — Ciung Warna',
