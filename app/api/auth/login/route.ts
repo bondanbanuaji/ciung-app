@@ -11,13 +11,13 @@ export async function POST(request: NextRequest) {
   } catch {
     return NextResponse.json({ success: false, message: 'Payload tidak valid' }, { status: 400 })
   }
-  const email = String(body.email ?? '').trim()
+  const email = String(body.email ?? '').trim().toLowerCase()
   const password = String(body.password ?? '')
   if (!email || !password) {
     return NextResponse.json({ success: false, message: 'Email dan password wajib diisi' }, { status: 422 })
   }
 
-  const user = await db.user.findUnique({ where: { email } })
+  const user = await db.user.findFirst({ where: { email: { equals: email, mode: 'insensitive' } } })
   if (!user) {
     return NextResponse.json({ success: false, message: 'Email atau password salah.' }, { status: 401 })
   }
