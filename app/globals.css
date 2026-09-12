@@ -89,7 +89,7 @@
   --color-brand-crimson-deep: hsl(var(--brand-crimson-deep));
   --color-brand-silver: hsl(var(--brand-silver));
   --color-brand-silver-light: hsl(var(--brand-silver-light));
-  /* Typography: display → Space Grotesk, sans/body → Inter, mono → IBM Plex Mono */
+  /* Typography: display → Lato, sans/body → Inter, mono → IBM Plex Mono */
   --font-display: var(--type-display);
   --font-sans: var(--type-body);
   --font-mono: var(--type-pmono);
