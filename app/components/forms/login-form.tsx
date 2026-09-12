@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Check, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '@/store/auth'
 
 export function LoginForm() {
@@ -10,6 +11,8 @@ export function LoginForm() {
   const { login } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -28,45 +31,129 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} autoComplete="off" className="font-satoshi space-y-8">
       {error && (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600">
           {error}
         </div>
       )}
-      <div>
-        <label className="block text-sm font-medium text-foreground">Email</label>
+
+      {/* Email — animated underline input */}
+      <div className="group relative">
+        <label
+          htmlFor="login-email"
+          className="text-xs font-semibold uppercase tracking-widest text-slate-500"
+        >
+          Email
+        </label>
         <input
-          name="email"
+          id="login-email"
+          name="login-email"
           type="email"
           required
+          spellCheck={false}
+          autoComplete="off"
+          data-lpignore="true"
+          data-1p-ignore="true"
+          data-bwignore="true"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-          placeholder="nama@ciungwarna.co.id"
+          placeholder="Masukkan email"
+          aria-label="Email"
+          className="w-full border-b-2 border-slate-100 bg-transparent pb-2 pt-1.5 text-[15px] text-[#111827] transition-colors focus:outline-none placeholder:text-slate-400 placeholder:opacity-50"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 h-[2px] w-0 bg-black transition-[width] duration-300 ease-out group-focus-within:w-full"
         />
       </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground">Password</label>
-        <input
-          name="password"
-          type="password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-          placeholder="••••••••"
+
+      {/* Password — animated underline input + eye toggle */}
+      <div className="group relative">
+        <label
+          htmlFor="login-password"
+          className="text-xs font-semibold uppercase tracking-widest text-slate-500"
+        >
+          Password
+        </label>
+        <div className="relative">
+          <input
+            id="login-password"
+            name="login-password"
+            type={showPassword ? 'text' : 'password'}
+            required
+            autoComplete="new-password"
+            data-lpignore="true"
+            data-1p-ignore="true"
+            data-bwignore="true"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Masukkan password"
+            aria-label="Password"
+            className="w-full border-b-2 border-slate-100 bg-transparent pb-2 pl-0 pr-10 pt-1.5 text-[15px] text-[#111827] transition-colors focus:outline-none placeholder:text-slate-400 placeholder:opacity-50"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((v) => !v)}
+            aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+            aria-pressed={showPassword}
+            className="absolute bottom-1 right-0 flex h-8 w-8 items-center justify-center text-slate-400 transition-colors hover:text-black focus:outline-none"
+          >
+            {showPassword ? <EyeOff className="h-[18px] w-[18px]" /> : <Eye className="h-[18px] w-[18px]" />}
+          </button>
+        </div>
+        <span
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 h-[2px] w-0 bg-black transition-[width] duration-300 ease-out group-focus-within:w-full"
         />
       </div>
+
+      {/* Remember me + forgot password */}
+      <div className="flex items-center justify-between">
+        <label className="flex cursor-pointer select-none items-center gap-2.5">
+          <input
+            type="checkbox"
+            className="sr-only"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
+          <span
+            aria-hidden="true"
+            className={`flex h-5 w-5 items-center justify-center rounded-[6px] border-2 transition-colors duration-200 ${
+              rememberMe ? 'border-black bg-black' : 'border-slate-200 bg-white'
+            }`}
+          >
+            <Check
+              strokeWidth={3}
+              className={`h-3.5 w-3.5 text-white transition-transform duration-200 ${
+                rememberMe ? 'scale-100' : 'scale-0'
+              }`}
+            />
+          </span>
+          <span className="text-sm font-medium text-slate-500">Ingat saya</span>
+        </label>
+        <a
+          href="#"
+          onClick={(e) => e.preventDefault()}
+          className="text-sm font-medium text-slate-500 transition-colors hover:text-black"
+        >
+          Lupa password?
+        </a>
+      </div>
+
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
+        className="w-full rounded-xl bg-black py-3.5 text-sm font-bold text-white shadow-black/5 transition duration-150 hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {loading ? 'Masuk...' : 'Masuk'}
       </button>
-      <p className="text-center text-xs text-muted-foreground">
-        Hubungi admin untuk akun akses.
+
+      <p className="text-center text-base text-slate-500">
+        Butuh akun akses?{' '}
+        <a href="https://wa.me/628978601538" target="_blank" rel="noopener noreferrer" className="font-bold text-black hover:underline">
+          Hubungi admin
+        </a>
       </p>
     </form>
   )

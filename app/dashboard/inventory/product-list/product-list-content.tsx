@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiGet, apiSend } from '@/lib/client-api'
 import { formatRupiah } from '@/lib/utils'
@@ -40,8 +41,10 @@ interface Supplier { id: number; code: string; name: string; company: string | n
 const emptyForm = { name: '', category_id: '', unit: 'Pcs', min_stock: 0, cost_price: 0, markup: 30, supplier_id: '' }
 
 export function ProductListContent() {
-  const [search, setSearch] = useState('')
-  const [q, setQ] = useState('')
+  const searchParams = useSearchParams()
+  const urlQ = searchParams.get('q') ?? ''
+  const [search, setSearch] = useState(urlQ)
+  const [q, setQ] = useState(urlQ)
   const [category, setCategory] = useState('')
   const [status, setStatus] = useState('')
   const [sort, setSort] = useState('name')
@@ -53,6 +56,13 @@ export function ProductListContent() {
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const qc = useQueryClient()
   const { show } = useToast()
+
+  // Sinkronkan filter saat datang dari search header (?q=...)
+  useEffect(() => {
+    setSearch(urlQ)
+    setQ(urlQ)
+    setPage(1)
+  }, [urlQ])
 
   const params = new URLSearchParams({ search: q, category, status, sort, page: String(page), per_page: '8' })
   const { data, isLoading, isError } = useQuery({
