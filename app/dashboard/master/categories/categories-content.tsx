@@ -72,7 +72,7 @@ export function CategoriesContent() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">Kategori</h1>
+        <h1 className="font-display text-2xl font-semibold text-foreground">Kategori</h1>
         <Button onClick={openAdd}>+ Tambah Kategori</Button>
       </div>
       <Card><CardContent className="p-0">
@@ -105,7 +105,7 @@ export function CategoriesContent() {
           <div><Label>Nama</Label><Input value={name} onChange={(e) => setName(e.target.value)} required /></div>
           <div className="grid grid-cols-2 gap-3">
             <div><Label>Icon (opsional)</Label><Input value={icon} onChange={(e) => setIcon(e.target.value)} placeholder="Palette" /></div>
-            <div><Label>Warna (opsional)</Label><Input value={color} onChange={(e) => setColor(e.target.value)} placeholder="#e0f2fe" /></div>
+            <div><Label>Warna (opsional)</Label><Input value={color} onChange={(e) => setColor(e.target.value)} placeholder="#E7E9EC" /></div>
           </div>
           <Button type="submit" disabled={saving} className="w-full">{saving ? 'Menyimpan...' : 'Simpan'}</Button>
         </form>

@@ -1,12 +1,18 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Space_Grotesk, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/store/providers'
 
-const inter = Inter({ subsets: ['latin'] })
+/* Ciung Warna type system:
+   - display → Space Grotesk (brand / headings / KPI)
+   - sans (body) → Inter (UI / form / table / nav)
+   - mono → IBM Plex Mono (SKU / transaction ID / technical ref) */
+const display = Space_Grotesk({ subsets: ['latin'], weight: ['500', '600', '700'], variable: '--type-display', display: 'swap' })
+const body = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--type-body', display: 'swap' })
+const pmono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--type-pmono', display: 'swap' })
 
 export const viewport: Viewport = {
-  themeColor: '#2563eb',
+  themeColor: '#0B1F3A',
 }
 
 const appUrl =
@@ -38,7 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${display.variable} ${body.variable} ${pmono.variable} font-sans antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

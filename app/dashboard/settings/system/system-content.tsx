@@ -58,7 +58,7 @@ export function SystemContent() {
 
   return (
     <div className="max-w-xl space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Sistem</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Sistem</h1>
       <Card>
         <CardHeader><CardTitle>Informasi Aplikasi</CardTitle></CardHeader>
         <CardContent className="space-y-2 text-sm">

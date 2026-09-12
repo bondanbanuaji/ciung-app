@@ -92,7 +92,7 @@ export function PartnerContent({ kind, title, single }: { kind: 'suppliers' | 'c
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+        <h1 className="font-display text-2xl font-semibold text-foreground">{title}</h1>
         <Button onClick={openAdd}>+ Tambah {single}</Button>
       </div>
       <Card><CardContent className="p-4">
@@ -116,12 +116,12 @@ export function PartnerContent({ kind, title, single }: { kind: 'suppliers' | 'c
                   {rows.length === 0 && <TableRow><TableCell className="text-muted-foreground">Tidak ada data.</TableCell></TableRow>}
                   {rows.map((p) => (
                     <TableRow key={p.code}>
-                      <TableCell className="font-medium">{p.code}</TableCell>
+                      <TableCell className="font-mono text-xs font-medium">{p.code}</TableCell>
                       <TableCell>{p.name}</TableCell>
                       {hasCompany && <TableCell>{p.company ?? '-'}</TableCell>}
                       <TableCell>{p.phone ?? '-'}</TableCell>
-                      <TableCell>{p.totalTransactions}</TableCell>
-                      <TableCell>{formatRupiah(p.totalPurchase)}</TableCell>
+                      <TableCell className="tabular-nums">{p.totalTransactions}</TableCell>
+                      <TableCell className="tabular-nums">{formatRupiah(p.totalPurchase)}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">
                           <Button size="sm" variant="outline" onClick={() => openEdit(p)}>Ubah</Button>

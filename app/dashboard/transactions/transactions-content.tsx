@@ -36,7 +36,7 @@ export function TransactionsContent() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Riwayat Transaksi</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Riwayat Transaksi</h1>
       <Card><CardContent className="flex flex-wrap items-end gap-2 p-4">
         <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); setQ(search); setPage(1) }}>
           <Input placeholder="Cari produk..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-52" />
@@ -69,8 +69,8 @@ export function TransactionsContent() {
                       <TableCell>{formatDate(t.date)}</TableCell>
                       <TableCell>{t.productName}</TableCell>
                       <TableCell><Badge variant={t.type === 'masuk' ? 'success' : t.type === 'keluar' ? 'info' : 'warning'}>{t.type}</Badge></TableCell>
-                      <TableCell>{t.qty}</TableCell>
-                      <TableCell>{formatRupiah(t.total)}</TableCell>
+                      <TableCell className="tabular-nums">{t.qty}</TableCell>
+                      <TableCell className="tabular-nums">{formatRupiah(t.total)}</TableCell>
                       <TableCell>{t.user}</TableCell>
                     </TableRow>
                   ))}

@@ -58,8 +58,8 @@ export function ReportsContent() {
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">Laporan</h1>
-        <a href={exportHref} className="inline-flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground">Export CSV</a>
+        <h1 className="font-display text-2xl font-semibold text-foreground">Laporan</h1>
+        <a href={exportHref} className="inline-flex h-10 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover">Export CSV</a>
       </div>
       <Card><CardContent className="flex flex-wrap items-end gap-2 p-4">
         <div className="flex gap-1 rounded-lg bg-s-muted p-1">
@@ -85,11 +85,11 @@ export function ReportsContent() {
                   {rows.length === 0 && <TableRow><TableCell className="text-muted-foreground">Tidak ada data.</TableCell></TableRow>}
                   {rows.map((r: any) => (
                     <TableRow key={r.code}>
-                      <TableCell className="font-medium">{r.code}</TableCell>
+                      <TableCell className="font-mono text-xs font-medium">{r.code}</TableCell>
                       <TableCell>{r.name}</TableCell>
                       <TableCell>{r.category}</TableCell>
-                      <TableCell>{r.stock} {r.unit}</TableCell>
-                      <TableCell>{formatRupiah(r.stockValue)}</TableCell>
+                      <TableCell className="tabular-nums">{r.stock} {r.unit}</TableCell>
+                      <TableCell className="tabular-nums">{formatRupiah(r.stockValue)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -106,8 +106,8 @@ export function ReportsContent() {
                     <TableRow key={r.id}>
                       <TableCell>{new Date(r.date).toLocaleDateString('id-ID')}</TableCell>
                       <TableCell>{r.productName}</TableCell>
-                      <TableCell>{r.qty}</TableCell>
-                      <TableCell>{formatRupiah(r.total)}</TableCell>
+                      <TableCell className="tabular-nums">{r.qty}</TableCell>
+                      <TableCell className="tabular-nums">{formatRupiah(r.total)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -136,7 +136,7 @@ export function ProductListContent() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">Semua Barang</h1>
+        <h1 className="font-display text-2xl font-semibold text-foreground">Semua Barang</h1>
         <Button onClick={openAdd}>+ Tambah Barang</Button>
       </div>
 
@@ -178,11 +178,11 @@ export function ProductListContent() {
                   {products.length === 0 && <TableRow><TableCell className="text-muted-foreground">Tidak ada data.</TableCell></TableRow>}
                   {products.map((p) => (
                     <TableRow key={p.code}>
-                      <TableCell className="font-medium">{p.code}</TableCell>
+                      <TableCell className="font-mono text-xs font-medium">{p.code}</TableCell>
                       <TableCell>{p.name}</TableCell>
                       <TableCell>{p.category}</TableCell>
-                      <TableCell>{p.stock} {p.unit}</TableCell>
-                      <TableCell>{formatRupiah(p.sellingPrice)}</TableCell>
+                      <TableCell className="tabular-nums">{p.stock} {p.unit}</TableCell>
+                      <TableCell className="tabular-nums">{formatRupiah(p.sellingPrice)}</TableCell>
                       <TableCell><Badge variant={p.status === 'habis' ? 'destructive' : p.status === 'rendah' ? 'warning' : 'success'}>{p.status}</Badge></TableCell>
                       <TableCell>
                         <div className="flex gap-1">

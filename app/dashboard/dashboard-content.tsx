@@ -54,7 +54,7 @@ export function DashboardContent() {
   if (isError || !data?.data) {
     return (
       <div className="space-y-4">
-        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="font-display text-2xl font-semibold text-foreground">Dashboard</h1>
         <Card><CardContent className="p-6 text-sm text-destructive">Gagal memuat data. <button className="underline" onClick={() => refetch()}>Coba lagi</button></CardContent></Card>
       </div>
     )
@@ -76,13 +76,13 @@ export function DashboardContent() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Dashboard</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
           <Card key={c.label}>
             <CardContent className="p-6">
               <p className="text-sm font-medium text-muted-foreground">{c.label}</p>
-              <p className="mt-2 text-2xl font-bold text-foreground">{c.value}</p>
+              <p className="font-display mt-2 text-2xl font-bold tabular-nums text-foreground">{c.value}</p>
             </CardContent>
           </Card>
         ))}
@@ -99,8 +99,8 @@ export function DashboardContent() {
                 <YAxis fontSize={12} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="Masuk" fill="#16a34a" />
-                <Bar dataKey="Keluar" fill="#2563eb" />
+                <Bar dataKey="Masuk" fill="#31577D" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="Keluar" fill="#C51F2A" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -116,8 +116,8 @@ export function DashboardContent() {
               <TableBody>
                 {lowStockProducts.length === 0 && <TableRow><TableCell className="text-muted-foreground">Semua stok aman.</TableCell></TableRow>}
                 {lowStockProducts.map((p) => (
-                  <TableRow key={p.code}>
-                    <TableCell className="font-medium">{p.code}</TableCell>
+                    <TableRow key={p.code}>
+                      <TableCell className="font-mono text-xs font-medium">{p.code}</TableCell>
                     <TableCell>{p.name}</TableCell>
                     <TableCell>{p.stock} {p.unit}</TableCell>
                     <TableCell><Badge variant={statusVariant(p.status)}>{p.status}</Badge></TableCell>
@@ -139,7 +139,7 @@ export function DashboardContent() {
                     <TableCell className="font-mono text-xs">{t.id}</TableCell>
                     <TableCell>{t.productName}</TableCell>
                     <TableCell><Badge variant={typeVariant(t.type)}>{t.type}</Badge></TableCell>
-                    <TableCell>{t.qty}</TableCell>
+                    <TableCell className="tabular-nums">{t.qty}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -53,7 +53,7 @@ export function ProfileContent() {
 
   return (
     <div className="max-w-xl space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Profil</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Profil</h1>
       <Card>
         <CardHeader><CardTitle>Data Akun</CardTitle></CardHeader>
         <CardContent>

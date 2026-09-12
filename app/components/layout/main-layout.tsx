@@ -46,7 +46,7 @@ function HelpCard({ onOpenGuide }: { onOpenGuide: () => void }) {
       <p className="text-xs text-muted-foreground mt-1 leading-relaxed">Lihat panduan penggunaan.</p>
       <button
         onClick={onOpenGuide}
-        className="mt-2 w-full h-8 bg-primary text-primary-foreground rounded-lg text-xs font-medium shadow-[var(--shadow-elevation-1)] hover:shadow-[var(--shadow-elevation-2)] transition-shadow"
+        className="mt-2 w-full h-8 bg-primary text-primary-foreground rounded-lg text-xs font-medium shadow-[var(--shadow-elevation-1)] hover:bg-primary-hover hover:shadow-[var(--shadow-elevation-2)] transition-shadow"
       >
         Buka Panduan
       </button>
@@ -280,7 +280,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             <Menu size={20} />
           </button>
           <div className="flex-1 min-w-0">
-            <h1 className="font-semibold text-foreground leading-none text-[15px] lg:text-base truncate">{pageTitle(undefined)}</h1>
+            <h1 className="font-display font-semibold text-foreground leading-none text-[15px] lg:text-base truncate">{pageTitle(undefined)}</h1>
             <p className="text-xs text-muted-foreground hidden sm:block mt-0.5 truncate">Kelola inventory Ciung Warna</p>
           </div>
           <form onSubmit={submitSearch} className="hidden md:flex items-center gap-2 bg-s-muted rounded-lg px-3 h-9 w-[260px] lg:w-[300px] shadow-[var(--shadow-border)] shrink-0">
@@ -362,7 +362,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-destructive hover:bg-red-50"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-destructive hover:bg-destructive/10"
                 >
                   <LogOut size={15} /> Keluar
                 </button>
@@ -375,7 +375,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
               onClick={() => { setNotifOpen(false); setProfileOpen(false) }}
             />
           )}
-          <button onClick={handleLogout} className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-red-50 sm:hidden shrink-0" aria-label="Keluar">
+          <button onClick={handleLogout} className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-destructive/10 sm:hidden shrink-0" aria-label="Keluar">
             <LogOut size={18} className="text-destructive" />
           </button>
         </header>
@@ -387,7 +387,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
           <span className="font-mono">Next.js • Prisma • PostgreSQL</span>
         </footer>
       </div>
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md shadow-[0_-1px_8px_rgba(16,24,40,0.06)] flex items-stretch h-[64px]">
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md shadow-[0_-1px_8px_rgba(11,31,58,0.08)] flex items-stretch h-[64px]">
         {[
           { label: 'Beranda', icon: LayoutDashboard, to: '/dashboard', active: isActive('/dashboard') },
           { label: 'Inventory', icon: Package, to: '/dashboard/inventory', active: isActivePrefix('/dashboard/inventory') },
@@ -428,7 +428,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                   setGuideOpen(true)
                 }}
               />
-              <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-destructive hover:bg-red-50">
+              <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10">
                 <LogOut size={17} /> Keluar
               </button>
             </div>

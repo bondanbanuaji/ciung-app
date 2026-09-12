@@ -78,7 +78,7 @@ export function PricingContent() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Harga</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Harga</h1>
       <Card><CardContent className="flex flex-wrap items-end gap-2 p-4">
         <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); setQ(search); setPage(1) }}>
           <Input placeholder="Cari produk..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-52" />
@@ -103,11 +103,11 @@ export function PricingContent() {
                   {rows.map((p) => (
                     <TableRow key={p.id}>
                       <TableCell><input type="checkbox" checked={checked.includes(p.id)} onChange={() => toggle(p.id)} /></TableCell>
-                      <TableCell className="font-medium">{p.code}</TableCell>
+                      <TableCell className="font-mono text-xs font-medium">{p.code}</TableCell>
                       <TableCell>{p.name}</TableCell>
-                      <TableCell>{formatRupiah(p.basePrice)}</TableCell>
-                      <TableCell>{p.markup}%</TableCell>
-                      <TableCell>{formatRupiah(p.currentPrice)}</TableCell>
+                      <TableCell className="tabular-nums">{formatRupiah(p.basePrice)}</TableCell>
+                      <TableCell className="tabular-nums">{p.markup}%</TableCell>
+                      <TableCell className="tabular-nums">{formatRupiah(p.currentPrice)}</TableCell>
                       <TableCell><Button size="sm" variant="outline" onClick={() => openEdit(p)}>Ubah</Button></TableCell>
                     </TableRow>
                   ))}

@@ -7,10 +7,10 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({ className, variant = 'default', size = 'default', ...props }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none'
+  const baseStyles = 'inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none'
   const variants = {
-    default: 'bg-primary text-primary-foreground shadow-[var(--shadow-elevation-1)] hover:shadow-[var(--shadow-elevation-2)]',
-    destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+    default: 'bg-primary text-primary-foreground shadow-[var(--shadow-elevation-1)] hover:bg-primary-hover hover:shadow-[var(--shadow-elevation-2)]',
+    destructive: 'bg-destructive text-destructive-foreground hover:bg-accent-hover',
     outline: 'border border-input bg-background shadow-[var(--shadow-border)] hover:bg-s-muted',
     ghost: 'hover:bg-s-muted',
     secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',

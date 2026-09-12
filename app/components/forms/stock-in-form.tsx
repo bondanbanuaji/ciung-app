@@ -52,7 +52,7 @@ export function StockInForm() {
 
   return (
     <div className="max-w-2xl space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Barang Masuk</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Barang Masuk</h1>
       <Card>
         <CardHeader><CardTitle>Formulir Penerimaan Barang</CardTitle></CardHeader>
         <CardContent>

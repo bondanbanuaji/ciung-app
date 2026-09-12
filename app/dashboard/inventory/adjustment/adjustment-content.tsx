@@ -51,7 +51,7 @@ export function AdjustmentContent() {
 
   return (
     <div className="max-w-2xl space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Adjustment Stok</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Adjustment Stok</h1>
       <Card>
         <CardHeader><CardTitle>Stock Opname</CardTitle></CardHeader>
         <CardContent>

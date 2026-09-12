@@ -33,7 +33,7 @@ export function StoreLogo({ size = 64, showName = true }: { size?: number; showN
         className="rounded-2xl object-contain"
         priority
       />
-      {showName && <span className="text-2xl font-bold text-foreground">{name}</span>}
+      {showName && <span className="font-display text-2xl font-bold text-foreground">{name}</span>}
     </span>
   )
 }
@@ -60,7 +60,7 @@ export function StoreMark({ size = 32 }: { size?: number }) {
         priority
       />
       <span className="min-w-0">
-        <span className="block font-semibold text-sidebar-foreground leading-none text-[14px] truncate">{name}</span>
+        <span className="font-display block font-bold text-sidebar-foreground leading-none text-[14px] truncate">{name}</span>
         <span className="block text-[11px] tracking-widest font-medium text-muted-foreground uppercase mt-0.5">Inventory</span>
       </span>
     </span>

@@ -77,7 +77,7 @@ export function UsersContent() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">User & Akses</h1>
+        <h1 className="font-display text-2xl font-semibold text-foreground">User & Akses</h1>
         <Button onClick={openAdd}>+ Tambah User</Button>
       </div>
       <Card><CardContent className="p-0">

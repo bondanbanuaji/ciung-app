@@ -57,7 +57,7 @@ export function StockOutContent() {
 
   return (
     <div className="max-w-2xl space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Barang Keluar</h1>
+      <h1 className="font-display text-2xl font-semibold text-foreground">Barang Keluar</h1>
       <Card>
         <CardHeader><CardTitle>Formulir Penjualan / Pengeluaran</CardTitle></CardHeader>
         <CardContent>
