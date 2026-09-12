@@ -384,9 +384,8 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         <main className="flex-1 p-3 md:p-4 lg:p-6 bg-background pb-20 lg:pb-6">
           {children}
         </main>
-        <footer className="hidden lg:flex px-6 py-3 bg-surface shadow-[var(--shadow-elevation-1)] text-xs text-muted-foreground justify-between">
+        <footer className="hidden lg:flex px-6 py-3 bg-surface shadow-[var(--shadow-elevation-1)] text-xs text-muted-foreground">
           <span>&copy; 2026 Ciung Warna — Inventory Management</span>
-          <span className="font-mono">Next.js • Prisma • PostgreSQL</span>
         </footer>
       </div>
       <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-md shadow-[0_-1px_8px_rgba(11,31,58,0.08)] flex items-stretch h-[64px]">
