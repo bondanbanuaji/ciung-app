@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk, IBM_Plex_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/store/providers'
+import { RegisterSW } from '@/components/pwa/register-sw'
 
 /* Ciung Warna type system:
    - display → Space Grotesk (brand / headings / KPI)
@@ -26,9 +27,19 @@ export const metadata: Metadata = {
     template: '%s — Ciung Warna',
   },
   description: 'Kelola inventory Ciung Warna',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    title: 'Ciung Warna',
+    statusBarStyle: 'black-translucent',
+  },
   icons: {
-    icon: [{ url: '/img/ciung__logo.ico', type: 'image/x-icon' }],
-    apple: [{ url: '/img/ciung__logo.png', type: 'image/png' }],
+    icon: [
+      { url: '/img/ciung__logo.ico', type: 'image/x-icon' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
     title: 'Ciung Warna — Inventory Management',
@@ -45,6 +56,7 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body className={`${display.variable} ${body.variable} ${pmono.variable} font-sans antialiased`}>
+        <RegisterSW />
         <Providers>{children}</Providers>
       </body>
     </html>

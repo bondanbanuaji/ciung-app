@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useAuth } from '@/store/auth'
 import { StoreMark } from '@/components/brand/store-logo'
 import { Modal } from '@/components/ui/modal'
+import { InstallAppButton } from '@/components/pwa/install-app-button'
 import { apiGet } from '@/lib/client-api'
 
 interface LowProduct {
@@ -293,6 +294,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
               className="bg-transparent outline-none text-sm flex-1 min-w-0 placeholder:text-muted-foreground/50"
             />
           </form>
+          <InstallAppButton />
           <div className="relative shrink-0">
             <button onClick={toggleNotif} className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-s-muted shrink-0 relative" aria-label="Notifikasi" aria-expanded={notifOpen}>
               <Bell size={18} className="text-muted-foreground" />
